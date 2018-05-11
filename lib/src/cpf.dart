@@ -1,14 +1,14 @@
-import 'package:burocracia/src/util/generate.dart';
+import 'package:cpf/src/util/generate.dart';
 
-String generateCPF({bool formatted = false}) {
+String gerarCPF({bool formatted = false}) {
   List<int> n = randomizer(9);
   n
-    ..add(generateCPFValidationNumber(n))
-    ..add(generateCPFValidationNumber(n));
+    ..add(gerarDigitoVerificador(n))
+    ..add(gerarDigitoVerificador(n));
   return formatted ? formatCPF(n) : n.join();
 }
 
-int generateCPFValidationNumber(List<int> digits) {
+int gerarDigitoVerificador(List<int> digits) {
   int baseNumber = 0;
   for (var i = 0; i < digits.length; i++) {
     baseNumber += digits[i] * ((digits.length + 1) - i);
@@ -17,15 +17,15 @@ int generateCPFValidationNumber(List<int> digits) {
   return verificationDigit >= 10 ? 0 : verificationDigit;
 }
 
-bool validateCPF(String cpf) {
+bool validarCPF(String cpf){
   List<int> sanitizedCPF = cpf
     .replaceAll(new RegExp(r'\.|-'), '')
     .split('')
     .map((String digit) => int.parse(digit))
     .toList();
   return !blacklistedCPF(sanitizedCPF.join()) &&
-    sanitizedCPF[9] == generateCPFValidationNumber(sanitizedCPF.getRange(0, 9).toList()) &&
-    sanitizedCPF[10] == generateCPFValidationNumber(sanitizedCPF.getRange(0, 10).toList());
+    sanitizedCPF[9] == gerarDigitoVerificador(sanitizedCPF.getRange(0, 9).toList()) &&
+    sanitizedCPF[10] == gerarDigitoVerificador(sanitizedCPF.getRange(0, 10).toList());
 }
 
 bool blacklistedCPF(String cpf) {
