@@ -1,9 +1,9 @@
 import 'dart:math';
 
-String randomizer(int size) {
-  List<String> random = new List<String>();
+List<int> randomizer(int size) {
+  List<int> random = new List<int>();
   for (var i = 0; i < size; i++) {
-    random.add(new Random(100).nextInt(9).toString());
+    random.add(new Random().nextInt(9));
   }
-  return random.join();
+  return random;
 }
