@@ -13,4 +13,15 @@ void main() {
       expect(validateCPF('111.111.111-11'), isFalse);
     });
   });
+  group('Gerador de CNPJ', () {
+    test('cria um CNPJ válido', () {
+      expect(validateCNPJ(generateCNPJ()), isTrue);
+    });
+    test('cria um CNPJ válido e formatado', () {
+      expect(new RegExp(r'\.|-').hasMatch(generateCNPJ(formatted: true)), isTrue);
+    });
+    test('não valida CNPJ inválido', () {
+      expect(validateCNPJ('111.111.111-11'), isFalse);
+    });
+  });
 }

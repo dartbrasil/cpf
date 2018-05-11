@@ -3,12 +3,12 @@ import 'package:burocracia/src/util/generate.dart';
 String generateCPF({bool formatted = false}) {
   List<int> n = randomizer(9);
   n
-    ..add(generateValidationNumber(n))
-    ..add(generateValidationNumber(n));
-  return formatted ? format(n) : n.join();
+    ..add(generateCPFValidationNumber(n))
+    ..add(generateCPFValidationNumber(n));
+  return formatted ? formatCPF(n) : n.join();
 }
 
-int generateValidationNumber(List<int> digits) {
+int generateCPFValidationNumber(List<int> digits) {
   int baseNumber = 0;
   for (var i = 0; i < digits.length; i++) {
     baseNumber += digits[i] * ((digits.length + 1) - i);
@@ -24,8 +24,8 @@ bool validateCPF(String cpf) {
     .map((String digit) => int.parse(digit))
     .toList();
   return !blacklistedCPF(sanitizedCPF.join()) &&
-    sanitizedCPF[9] == generateValidationNumber(sanitizedCPF.getRange(0, 9).toList()) &&
-    sanitizedCPF[10] == generateValidationNumber(sanitizedCPF.getRange(0, 10).toList());
+    sanitizedCPF[9] == generateCPFValidationNumber(sanitizedCPF.getRange(0, 9).toList()) &&
+    sanitizedCPF[10] == generateCPFValidationNumber(sanitizedCPF.getRange(0, 10).toList());
 }
 
 bool blacklistedCPF(String cpf) {
@@ -41,5 +41,5 @@ bool blacklistedCPF(String cpf) {
     cpf == '99999999999';
 }
 
-String format(List<int> n) =>
+String formatCPF(List<int> n) =>
   '${n[0]}${n[1]}${n[2]}.${n[3]}${n[4]}${n[5]}.${n[6]}${n[7]}${n[8]}-${n[9]}${n[10]}';
